@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://blog.csdn.net/chenhaotong/article/category/5809567 -->
+<configuration  status="debug" monitorInterval="30">
+
+    <properties>
+        <property name="LOG_HOME">d:/logs</property>
+        <property name="FILE_NAME">mylog</property>
+    </properties>
+
+    <appenders>
+        <!-- 输出到控制台 -->
+        <console name="consoleDebug" target="SYSTEM_ERR">
+            <ThresholdFilter  level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <ThresholdFilter  level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+        </console>
+        <console name="consoleInfo" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyyMMddHHmmss}\t%m%n" />
+            <ThresholdFilter  level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <ThresholdFilter  level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        </console>
+
+        <!-- 输出到滚动文件中 -->
+        <RollingFile name="rollingFileDebug" fileName="${LOG_HOME}/${FILE_NAME}" filePattern="${LOG_HOME}/${FILE_NAME}_%d{yyyy-MM-dd}_debug.log" append="true">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyyMMddHHmmss}\t%m%n" />
+            <!-- <SizeBasedTriggeringPolicy size="1KB" /> -->
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+
+        <!-- 输出到滚动文件中 -->
+        <RollingFile name="rollingFileDebugSys" fileName="${LOG_HOME}/${sys:my.log}" filePattern="${LOG_HOME}/${sys:my.log}_%d{yyyy-MM-dd}_debug.log" append="true">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyyMMddHHmmss}\t%m%n" />
+            <!-- <SizeBasedTriggeringPolicy size="1KB" /> -->
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+
+        <!--
+        <root level="DEBUG">
+            <appender-ref ref="consoleInfo" />
+            <appender-ref ref="consoleDebug" />
+            <appender-ref ref="rollingFileDebug" />
+        </root>
+        -->
+        <!-- 代码指定文件名 -->
+        <Logger name="com.sosbuger.app.Test02" additivity="false" level="ALL">
+            <appender-ref ref="rollingFileDebugSys" level="DEBUG"/>
+        </Logger>
+    </loggers>
+
+</configuration>
